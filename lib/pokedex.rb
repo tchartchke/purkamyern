@@ -11,6 +11,11 @@ class Pokedex
     @@all.add(self)
   end
 
+  def factory_reset
+    pokemon.clear
+    owner = nil
+  end
+
   def scan(identifier)
     poke = Pokedex.discovered?(identifier)
     poke ||= discover_new_pokemon(identifier)
