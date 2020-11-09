@@ -13,13 +13,22 @@ class Pokedex
   end
 
   def scan_pokemon(name)
-    if !self.pokemon.find { |entry| entry.name == name }
+    if !found?(name)
       new_pokemon = Api.new.get_pokemon_by_name(name)
-      self.pokemon.add?(new_pokemon)
+      pokemon.add?(new_pokemon)
       self.scanned_in += 1
     else
       puts "#{name} is already in your pokedex"
     end
+  end
+
+  def get_id(name)
+    poke = found?(name)
+    poke ? poke.id : nil
+  end
+
+  def found?(name)
+    pokemon.find { |entry| entry.name == name}
   end
 
   def self.all
