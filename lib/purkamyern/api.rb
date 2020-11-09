@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api
+class Purkamyern::Api
   attr_reader :url
 
   def initialize
@@ -14,4 +14,7 @@ class Api
     habitat_info = JSON.parse(habitat)
     Pokemon.new(base_info, habitat_info)
   end
+
+  # TODO: add in evolution details
+
 end

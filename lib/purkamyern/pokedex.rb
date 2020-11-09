@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Pokedex
+class Purkamyern::Pokedex
   attr_accessor :pokemon, :owner
 
   @@all = Set.new
@@ -12,12 +12,11 @@ class Pokedex
   end
 
   def factory_reset
-    pokemon.clear
-    owner = nil
+    @@all.delete(self)
   end
 
   def scan(identifier)
-    poke = Pokedex.discovered?(identifier)
+    poke = Purkamyern::Pokedex.discovered?(identifier)
     poke ||= discover_new_pokemon(identifier)
     pokemon.add?(poke) unless seen?(poke.name)
   end
@@ -28,7 +27,7 @@ class Pokedex
 
   def get_pokemon_id_or_name(identifier)
     poke = seen?(identifier)
-    poke ? poke.send(Pokedex.flip(identifier)) : nil
+    poke ? poke.send(Purkamyern::Pokedex.flip(identifier)) : nil
   end
 
   def get_type(identifier)
@@ -39,17 +38,17 @@ class Pokedex
   def seen?(identifier)
     return nil if pokemon.empty?
 
-    pokemon.find { |p| p.send(Pokedex.name_or_id(identifier)) == identifier }
+    pokemon.find { |p| p.send(Purkamyern::Pokedex.name_or_id(identifier)) == identifier }
   end
 
   def seen
-    pokemon.size
+    @pokemon.size
   end
 
   def self.discovered?(identifier)
-    return nil if Pokemon.all.empty?
+    return nil if Purkamyern::Pokemon.all.empty?
 
-    Pokemon.all.find { |p| p.send(name_or_id(identifier)) == identifier }
+    Purkamyern::Pokemon.all.find { |p| p.send(name_or_id(identifier)) == identifier }
   end
 
   def self.name_or_id(identifier)

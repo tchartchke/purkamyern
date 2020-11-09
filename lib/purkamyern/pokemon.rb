@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Pokemon
+class Purkamyern::Pokemon
   attr_accessor :name, :types, :id, :habitats
 
   @@all = Set.new
@@ -14,6 +14,8 @@ class Pokemon
     end
     @habitats = habitats['name']
     @@all.add(self) unless @@all.find { |entry| entry.name == name }
+
+  # TODO: add in evolution details
   end
 
   def self.all
