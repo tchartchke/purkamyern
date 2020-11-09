@@ -12,11 +12,19 @@ class Pokemon
     attributes['types'].each do |t|
       @types << t['type']['name']
     end
-    @@all.add(self) if !@@all.find { |entry| entry.name == name}
+    @@all.add(self) unless @@all.find { |entry| entry.name == name }
     self
   end
 
   def self.all
     @@all
+  end
+
+  def self.discovered
+    @@all.size
+  end
+
+  def self.clear
+    @@all.clear
   end
 end
