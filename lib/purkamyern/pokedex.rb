@@ -7,7 +7,7 @@ class Purkamyern::Pokedex
 
   def initialize(owner)
     @owner = owner
-    @pokemon = Set.new
+    @pokemon = SortedSet.new
     @@all.add(self)
   end
 
@@ -22,7 +22,7 @@ class Purkamyern::Pokedex
   end
 
   def discover_new_pokemon(identifier)
-    Api.new.get_pokemon(identifier)
+    Purkamyern::Api.new.get_pokemon(identifier)
   end
 
   def get_pokemon_id_or_name(identifier)
@@ -33,6 +33,10 @@ class Purkamyern::Pokedex
   def get_type(identifier)
     poke = seen?(identifier)
     poke ? poke.types : nil
+  end
+
+  def of_type(type)
+    pokemon.find_all { |p| p.type.include?(type)}
   end
 
   def seen?(identifier)

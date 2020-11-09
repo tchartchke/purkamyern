@@ -9,10 +9,8 @@ class Purkamyern::Api
 
   def get_pokemon(id)
     poke_info = RestClient.get("#{url}pokemon/#{id}/")
-    habitat = RestClient.get("#{url}pokemon-habitat/#{id}/")
     base_info = JSON.parse(poke_info)
-    habitat_info = JSON.parse(habitat)
-    Pokemon.new(base_info, habitat_info)
+    Purkamyern::Pokemon.new(base_info)
   end
 
   # TODO: add in evolution details

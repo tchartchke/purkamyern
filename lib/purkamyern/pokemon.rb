@@ -1,21 +1,24 @@
 # frozen_string_literal: true
 
 class Purkamyern::Pokemon
-  attr_accessor :name, :types, :id, :habitats
+  attr_accessor :name, :types, :id
 
   @@all = Set.new
 
-  def initialize(attributes, habitats)
+  def initialize(attributes)
     @name = attributes['name']
     @id = attributes['id']
     @types = []
     attributes['types'].each do |t|
       @types << t['type']['name']
     end
-    @habitats = habitats['name']
     @@all.add(self) unless @@all.find { |entry| entry.name == name }
 
   # TODO: add in evolution details
+  end
+
+  def <=>(other)
+    id <=> other.id
   end
 
   def self.all
