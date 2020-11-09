@@ -48,7 +48,6 @@ class Pokedex
   end
 
   def self.name_or_id(identifier)
-    # binding.pry
     identifier.to_i.positive? ? 'id' : 'name'
   end
 

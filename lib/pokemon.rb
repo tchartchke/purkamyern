@@ -13,7 +13,6 @@ class Pokemon
       @types << t['type']['name']
     end
     @@all.add(self) unless @@all.find { |entry| entry.name == name }
-    self
   end
 
   def self.all
