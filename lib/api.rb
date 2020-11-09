@@ -7,10 +7,9 @@ class Api
     @url = 'https://pokeapi.co/api/v2/'
   end
 
-  def get_pokemon_by_name(name)
-    response = RestClient.get("#{url}pokemon/#{name}/")
+  def get_pokemon(id)
+    response = RestClient.get("#{url}pokemon/#{id}/")
     poke_info = JSON.parse(response)
     Pokemon.new(poke_info)
   end
-
 end
