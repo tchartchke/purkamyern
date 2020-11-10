@@ -10,11 +10,10 @@ class Purkamyern::Pokemon
     @id = attributes['id']
     @types = []
     attributes['types'].each do |t|
-      @types << t['type']['name']
+      type = t['type']['name']
+      @types << type
     end
     @@all.add(self) unless @@all.find { |entry| entry.name == name }
-
-  # TODO: add in evolution details
   end
 
   def <=>(other)
@@ -27,9 +26,5 @@ class Purkamyern::Pokemon
 
   def self.discovered
     @@all.size
-  end
-
-  def self.clear
-    @@all.clear
   end
 end

@@ -13,7 +13,7 @@ class Purkamyern::Cli
       when "2"
         lookup_pokemon
       when "3"
-        of_type
+        pokemon_of_type
       when "4"
         my_pokemon
       when "5"
@@ -21,7 +21,7 @@ class Purkamyern::Cli
       when "exit"
         break
       else
-        puts "Unrecognized seletion. Please try again"
+        puts "Unrecognized selection. Please try again"
       end
     end
     goodbye
@@ -31,7 +31,7 @@ class Purkamyern::Cli
     print 'Please enter your name: '
     name = gets.strip
     @dex = Purkamyern::Pokedex.new(name)
-    puts 'You now have access to your own Pokedex.'
+    puts "You now have access to #{@dex.owner}'s Pokedex."
   end
 
   def main_menu
@@ -50,10 +50,13 @@ MAIN MENU
   def scan_pokemon
     print 'Enter Pokemon to add to Pokedex: '
     name = gets.strip.downcase
-    ## TODO: error check for valid name
     size = @dex.seen
-    add = @dex.scan(name)
-    puts @dex.seen > size ? "#{add.name.capitalize} (#{add.id}) was added to your Pokedex" : 'Error'
+    new_pokemon = @dex.scan(name)
+    if new_pokemon
+      puts @dex.seen > size ? "#{new_pokemon.name.capitalize} (#{new_pokemon.id}) was added to your Pokedex" : 'Pokemon already in Pokedex'
+    else
+      puts "Cannot find #{name}"
+    end
   end
 
   def lookup_pokemon
@@ -67,13 +70,13 @@ MAIN MENU
     end
   end
 
-  def of_type
+  def pokemon_of_type
     puts 'Enter which type you would like to search for: '
     val = gets.strip.downcase
-    # TODO: error check for valid type
-    poke = @dex.of_type(val)
+    # TODO: error check for valid pokemon_type
+    poke = @dex.find_pokemons_of_type(val)
     if poke.empty?
-      puts "no #{val} Pokemon seen yet"
+      puts "Unknown type of #{val}. No Pokemon to display"
     else
       poke.each { |p| print_pokemon(p) }
     end

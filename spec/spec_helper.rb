@@ -2,8 +2,6 @@
 
 require 'bundler/setup'
 require 'require_all'
-require 'rest-client'
-require 'json'
 require 'rspec'
 require 'set'
 require 'pry'
