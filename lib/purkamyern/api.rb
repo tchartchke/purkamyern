@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'pathname'
+require "net/http"
 
 class Purkamyern::Api
   attr_reader :url
@@ -9,19 +9,30 @@ class Purkamyern::Api
   end
 
   def get_pokemon(id)
+    ## TODO: remove and revert to API calls
 
-    # if !File.file?("/Users/char/Flatiron/projects/purkamyern/test data/pokemon/#{id}")
-    #   return nil
+    # require 'pathname'
+    # if File.exist?("/Users/char/Flatiron/projects/purkamyern/test_data/pokemon/#{id}")
+    #   poke_info = File.read("/Users/char/Flatiron/projects/purkamyern/test_data/pokemon/#{id}")
+    #   base_info = JSON.parse(poke_info)
+    #   Purkamyern::Pokemon.new(base_info)
     # end
 
-    poke_info = File.read("/Users/char/Flatiron/projects/purkamyern/test data/pokemon/#{id}")
-    base_info = JSON.parse(poke_info)
-    Purkamyern::Pokemon.new(base_info)
-    # poke_info = RestClient.get("#{url}pokemon/#{id}/")
-    # base_info = JSON.parse(poke_info)
-    # Purkamyern::Pokemon.new(base_info)
+    url_lookup = "#{url}pokemon/#{id}/"
+    if is_valid_endpoint?(url_lookup)
+      poke_info = RestClient.get(url_lookup)
+      base_info = JSON.parse(poke_info)
+      Purkamyern::Pokemon.new(base_info)
+    end
+    nil
   end
 
-  # TODO: add in evolution details
+  def is_valid_endpoint?(url_lookup)
+    url = URI.parse(url_lookup)
+    req = Net::HTTP.new(url.host, url.port)
+    req.use_ssl = true if url.scheme == 'https'
+    res = req.request_head(url.path)
+    res.code[0] != '4'
+  end
 
 end
