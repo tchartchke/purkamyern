@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 class Purkamyern::Pokedex
-  attr_accessor :pokemon, :owner
+  attr_accessor :pokemon, :owner, :api
 
   @@all = Set.new
 
   def initialize(owner)
     @owner = owner
     @pokemon = SortedSet.new
+    @api = Purkamyern::Api.new
     @@all.add(self)
   end
 
@@ -17,12 +18,14 @@ class Purkamyern::Pokedex
 
   def scan(identifier)
     poke = Purkamyern::Pokedex.discovered?(identifier)
+    ## TODO: verify that identifier is valid, aka path is valid
     poke ||= discover_new_pokemon(identifier)
     pokemon.add?(poke) unless seen?(poke.name)
+    poke
   end
 
   def discover_new_pokemon(identifier)
-    Purkamyern::Api.new.get_pokemon(identifier)
+    api.get_pokemon(identifier)
   end
 
   def get_pokemon_id_or_name(identifier)
@@ -36,13 +39,14 @@ class Purkamyern::Pokedex
   end
 
   def of_type(type)
-    pokemon.find_all { |p| p.type.include?(type)}
+    pokemon.find_all { |p| p.types.include?(type)}
+    
   end
 
   def seen?(identifier)
     return nil if pokemon.empty?
 
-    pokemon.find { |p| p.send(Purkamyern::Pokedex.name_or_id(identifier)) == identifier }
+    pokemon.find { |p| p.send(Purkamyern::Pokedex.name_or_id(identifier)).to_s == identifier.to_s }
   end
 
   def seen
@@ -52,7 +56,7 @@ class Purkamyern::Pokedex
   def self.discovered?(identifier)
     return nil if Purkamyern::Pokemon.all.empty?
 
-    Purkamyern::Pokemon.all.find { |p| p.send(name_or_id(identifier)) == identifier }
+    Purkamyern::Pokemon.all.find { |p| p.send(name_or_id(identifier)).to_s == identifier.to_s }
   end
 
   def self.name_or_id(identifier)

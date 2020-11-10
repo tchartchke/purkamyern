@@ -13,7 +13,7 @@ class Purkamyern::Cli
       when "2"
         lookup_pokemon
       when "3"
-        puts "pokemon by type"
+        of_type
       when "4"
         my_pokemon
       when "5"
@@ -52,14 +52,14 @@ MAIN MENU
     name = gets.strip.downcase
     ## TODO: error check for valid name
     size = @dex.seen
-    @dex.scan(name)
-    puts @dex.seen > size ? "#{name} was added to your Pokedex" : 'Error'
+    add = @dex.scan(name)
+    puts @dex.seen > size ? "#{add.name.capitalize} (#{add.id}) was added to your Pokedex" : 'Error'
   end
 
   def lookup_pokemon
     print 'Enter Pokemon ID or Name to look up: '
     val = gets.strip.downcase
-    poke = @dex.get_pokemon_id_or_name(val)
+    poke = @dex.seen?(val)
     if poke
       print_pokemon(poke)
     else
@@ -68,10 +68,15 @@ MAIN MENU
   end
 
   def of_type
+    puts 'Enter which type you would like to search for: '
     val = gets.strip.downcase
     # TODO: error check for valid type
-    @dex.of_type(val)
-    # TODO: Print prettily
+    poke = @dex.of_type(val)
+    if poke.empty?
+      puts "no #{val} Pokemon seen yet"
+    else
+      poke.each { |p| print_pokemon(p) }
+    end
   end
 
   def my_pokemon
@@ -81,7 +86,7 @@ MAIN MENU
   end
 
   def print_pokemon(poke)
-    puts "# #{'%03d' % poke.id}: #{poke.name.capitalize }, #{poke.types.join('-')}"
+    puts "#{'%03d' % poke.id.to_i}: #{poke.name.capitalize}, #{poke.types.join('-')}"
   end
 
   def dex_stats
