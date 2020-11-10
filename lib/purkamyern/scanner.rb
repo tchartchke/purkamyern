@@ -11,22 +11,12 @@ class Purkamyern::Scanner
   end
 
   def get_pokemon(id)
-    ## TODO: remove and revert to API calls
-
-    # require 'pathname'
-    # if File.exist?("/Users/char/Flatiron/projects/purkamyern/test_data/pokemon/#{id}")
-    #   poke_info = File.read("/Users/char/Flatiron/projects/purkamyern/test_data/pokemon/#{id}")
-    #   base_info = JSON.parse(poke_info)
-    #   Purkamyern::Pokemon.new(base_info)
-    # end
-
     url_lookup = "#{url}pokemon/#{id}/"
     if valid_endpoint?(url_lookup)
       poke_info = RestClient.get(url_lookup)
       base_info = JSON.parse(poke_info)
       Purkamyern::Pokemon.new(base_info)
     end
-    nil
   end
 
   def valid_endpoint?(url_lookup)

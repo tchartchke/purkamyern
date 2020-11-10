@@ -76,7 +76,7 @@ MAIN MENU
     # TODO: error check for valid pokemon_type
     poke = @dex.find_pokemons_of_type(val)
     if poke.empty?
-      puts "Unknown type of #{val}. No Pokemon to display"
+      puts "Unknown type \"#{val}\". No Pokemon to display"
     else
       poke.each { |p| print_pokemon(p) }
     end
