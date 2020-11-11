@@ -11,13 +11,4 @@ require 'purkamyern'
 # require "pry"
 # Pry.start
 
-# newpi1 = Purkamyern::Api.new.get_pokemon(1)
-# newpi2 = Purkamyern::Api.new.get_pokemon(2)
-# newpi3 = Purkamyern::Api.new.get_pokemon(3)
-# newpi4 = Purkamyern::Api.new.get_pokemon(4)
-
-# mydex.scan(3)
-# mydex.scan(1)
-# mydex.scan(2)
-# binding.pry
 Purkamyern::Cli.new.call

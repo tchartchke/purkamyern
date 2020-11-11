@@ -1,3 +1,5 @@
+require 'colorize'
+
 class Purkamyern::Cli
 
   def call
@@ -35,14 +37,13 @@ class Purkamyern::Cli
   end
 
   def main_menu
+    puts "\nMAIN MENU"
     puts <<~DOC
-    
-MAIN MENU
-  1. Scan in Pokemon to Pokedex
-  2. Search Pokedex for Pokemon
-  3. Look up Pokemon by type
-  4. View Pokemon saved to Pokedex
-  5. View Statistics
+    1. Scan in Pokemon to Pokedex
+    2. Search Pokedex for Pokemon
+    3. Look up Pokemon by type
+    4. View Pokemon saved to Pokedex
+    5. View Statistics
   Please Select an action. 'exit' to exit: 
   DOC
   end
@@ -53,9 +54,9 @@ MAIN MENU
     size = @dex.seen
     new_pokemon = @dex.scan(name)
     if new_pokemon
-      puts @dex.seen > size ? "#{new_pokemon.name.capitalize} (#{new_pokemon.id}) was added to your Pokedex" : 'Pokemon already in Pokedex'
+      puts @dex.seen > size ? "\t#{new_pokemon.name.capitalize} (#{new_pokemon.id}) was added to your Pokedex" : "\tPokemon already in Pokedex"
     else
-      puts "Cannot find #{name}"
+      puts "\tCannot find #{name}"
     end
   end
 
@@ -66,7 +67,7 @@ MAIN MENU
     if poke
       print_pokemon(poke)
     else
-      puts "Could not find #{val} in Pokedex"
+      puts "\tCould not find #{val} in Pokedex"
     end
   end
 
@@ -76,25 +77,25 @@ MAIN MENU
     # TODO: error check for valid pokemon_type
     poke = @dex.find_pokemons_of_type(val)
     if poke.empty?
-      puts "Unknown type \"#{val}\". No Pokemon to display"
+      puts "\tUnknown type \"#{val}\". No Pokemon to display"
     else
       poke.each { |p| print_pokemon(p) }
     end
   end
 
   def my_pokemon
-    return puts 'Your Pokedex is empty!' if @dex.pokemon.empty?
+    return puts "\tYour Pokedex is empty!" if @dex.pokemon.empty?
 
     @dex.pokemon.each { |p| print_pokemon(p) }
   end
 
   def print_pokemon(poke)
-    puts "#{'%03d' % poke.id.to_i}: #{poke.name.capitalize}, #{poke.types.join('-')}"
+    puts "\t#{'%03d' % poke.id.to_i}: #{poke.name.capitalize}, #{poke.types.join('-')}"
   end
 
   def dex_stats
-    puts "Personal Stats: #{@dex.seen} species seen."
-    puts "Global Stats: #{Purkamyern::Pokemon.discovered} species discovered."
+    puts "\tPersonal Stats: #{@dex.seen} species seen."
+    puts "\tGlobal Stats: #{Purkamyern::Pokemon.discovered} species discovered."
   end
 
   def goodbye
@@ -106,8 +107,7 @@ MAIN MENU
     sleep(0.5)
     print '. Powering off. '
     sleep(1)
-    puts 'Goodbye.'
+    puts 'Goodbye'.colorize(:cyan)
     sleep(0.5)
   end
 end
-
