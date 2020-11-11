@@ -32,7 +32,7 @@ class Purkamyern::Pokedex
   end
 
   def seen?(identifier)
-    return nil if pokemon.empty?
+    return if pokemon.empty?
 
     pokemon.find { |p| p.send(Purkamyern::Pokedex.name_or_id(identifier)).to_s == identifier.to_s }
   end
@@ -42,7 +42,7 @@ class Purkamyern::Pokedex
   end
 
   def self.discovered?(identifier)
-    return nil if Purkamyern::Pokemon.all.empty?
+    return if Purkamyern::Pokemon.all.empty?
 
     Purkamyern::Pokemon.all.find { |p| p.send(name_or_id(identifier)).to_s == identifier.to_s }
   end
@@ -50,4 +50,5 @@ class Purkamyern::Pokedex
   def self.name_or_id(identifier)
     identifier.to_i.positive? ? 'id' : 'name'
   end
+
 end
