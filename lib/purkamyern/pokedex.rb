@@ -28,7 +28,7 @@ class Purkamyern::Pokedex
   end
 
   def find_pokemons_of_type(type)
-    pokemon.find_all { |p| p.types.include?(type)} 
+    pokemon.find_all { |p| p.types.include?(type)}
   end
 
   def seen?(identifier)

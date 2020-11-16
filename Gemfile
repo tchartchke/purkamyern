@@ -13,3 +13,4 @@ gem 'require_all'
 gem 'rest-client'
 gem 'rspec', '~> 3.0'
 gem 'rubocop', '~> 1.2', require: false
+gem "tty-prompt"

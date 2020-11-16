@@ -1,24 +1,38 @@
 require 'colorize'
+require "tty-prompt"
 
 class Purkamyern::Cli
   # TODO: Fix menu calling to get rid of extra "exit"
   def call
     puts "System booting...\nWelcome to your Pokedex."
     set_dex
-    @top_input = "0"
-    until @top_input == 'exit'
-      main_menu if @top_index == "0"
-      @top_input = gets.strip
-      case @top_input
-      when "1" then scan_pokemon
-      when "2" then lookup_pokemon
-      when "3" then pokemon_of_type
-      when "4"then my_pokemon
-      when "exit" then break
-      else
-        puts "Unrecognized selection. Please try again"
+
+    prompt = TTY::Prompt.new
+    
+    choices = [
+      {name: 'Scan in Pokemon to Pokedex', value: 1},
+      {name: 'Search Pokedex for Pokemon', value: 2},
+      {name: 'Look up Pokemon by type', value: 3},
+      {name: 'See all Pokemon saved to Pokedex', value: 4},
+      {name: 'View Statistics', value: 5},
+      {name: 'Exit', value: 6}
+    ]
+    
+    user_input = 0
+
+    while user_input != 6
+      puts
+      user_input = prompt.select("Main Menu Selection", choices)
+      case user_input
+        when 1 then scan_pokemon
+        when 2 then lookup_pokemon
+        when 3 then pokemon_of_type
+        when 4 then my_pokemon
+        when 5 then dex_stats
       end
+
     end
+
     goodbye
   end
 
@@ -54,9 +68,10 @@ class Purkamyern::Cli
 
   def scan_successful_msg(poke, new_to_dex)
     if new_to_dex
-      puts "\t#{poke.name.capitalize} #{poke.id} was added to your Pokedex".green
+
+      puts "\t#{'%03d' % poke.id.to_i} #{poke.name.capitalize} was added to your Pokedex".green
     else
-      puts "\t#{poke.name.capitalize} already in Pokedex".red
+      puts "\t#{'%03d' % poke.id.to_i} #{poke.name.capitalize} already in Pokedex".red
     end
   end
 
@@ -90,7 +105,7 @@ class Purkamyern::Cli
   end
 
   def print_pokemon(poke)
-    puts "\t#{'%03d' % poke.id.to_i}".blue + "#{poke.name.capitalize}".green.bold + "#{poke.types.join('-')}".yellow
+    puts " #{'%03d' % poke.id.to_i}".blue + " #{poke.name.capitalize}".green.bold + " #{poke.types.join('-')}".yellow
   end
 
   def dex_stats
