@@ -1,14 +1,11 @@
 require 'colorize'
-require "tty-prompt"
+require 'tty-prompt'
 
 class Purkamyern::Cli
-  # TODO: Fix menu calling to get rid of extra "exit"
   def call
     puts "System booting...\nWelcome to your Pokedex."
     set_dex
-
     prompt = TTY::Prompt.new
-    
     choices = [
       {name: 'Scan in Pokemon to Pokedex', value: 1},
       {name: 'Search Pokedex for Pokemon', value: 2},
@@ -17,12 +14,10 @@ class Purkamyern::Cli
       {name: 'View Statistics', value: 5},
       {name: 'Exit', value: 6}
     ]
-    
     user_input = 0
-
     while user_input != 6
       puts
-      user_input = prompt.select("Main Menu Selection", choices)
+      user_input = prompt.select("Main Menu Selection".yellow.bold, choices)
       case user_input
         when 1 then scan_pokemon
         when 2 then lookup_pokemon
@@ -30,9 +25,7 @@ class Purkamyern::Cli
         when 4 then my_pokemon
         when 5 then dex_stats
       end
-
     end
-
     goodbye
   end
 
@@ -43,25 +36,13 @@ class Purkamyern::Cli
     puts "You now have access to #{@dex.owner}'s Pokedex.".green
   end
 
-  def main_menu
-    puts "MAIN MENU".yellow.on_black.bold
-    puts <<~DOC
-    1. Scan in Pokemon to Pokedex
-    2. Search Pokedex for Pokemon
-    3. Look up Pokemon by type
-    4. View Pokemon saved to Pokedex
-    5. View Statistics
-  Please Select an action. 'exit' to exit: 
-  DOC
-  end
-
   def scan_pokemon
     print 'Enter Pokemon to add to Pokedex: '
     name = gets.strip.downcase
     size = @dex.seen
     new_pokemon = @dex.scan(name)
     return puts "\tCannot find #{name}".red unless new_pokemon
-    
+
     new_to_dex = @dex.seen > size
     scan_successful_msg(new_pokemon, new_to_dex)
   end
@@ -89,7 +70,6 @@ class Purkamyern::Cli
   def pokemon_of_type
     puts 'Enter which type you would like to search for: '
     val = gets.strip.downcase
-    # TODO: error check for valid pokemon_type
     poke = @dex.find_pokemons_of_type(val)
     if poke.empty?
       puts "\tUnknown type \"#{val}\". No Pokemon to display".red
