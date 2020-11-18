@@ -2,7 +2,7 @@
 
 class Purkamyern::Pokedex
   attr_accessor :pokemon, :owner, :scanner
-
+  
   def initialize(owner)
     @owner = owner
     @pokemon = SortedSet.new

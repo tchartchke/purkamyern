@@ -12,14 +12,14 @@ class Purkamyern::Scanner
 
   def get_pokemon(id)
     url_lookup = "#{url}pokemon/#{id}/"
-    if valid_endpoint?(url_lookup)
+    if self.class.valid_endpoint?(url_lookup)
       poke_info = RestClient.get(url_lookup)
       base_info = JSON.parse(poke_info)
       Purkamyern::Pokemon.new(base_info)
     end
   end
 
-  def valid_endpoint?(url_lookup)
+  def self.valid_endpoint?(url_lookup)
     url = URI.parse(url_lookup)
     req = Net::HTTP.new(url.host, url.port)
     req.use_ssl = true if url.scheme == 'https'
@@ -27,3 +27,4 @@ class Purkamyern::Scanner
     res.code[0] != '4'
   end
 end
+
