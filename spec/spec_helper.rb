@@ -3,7 +3,8 @@
 require 'rspec'
 require 'pry'
 
-require_all 'lib'
+require 'require_all'
+require_rel ('../lib')
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
