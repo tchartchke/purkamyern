@@ -80,7 +80,6 @@ class Purkamyern::Cli
 
   def my_pokemon
     return puts "\tYour Pokedex is empty!".red if @dex.pokemon.empty?
-    binding.pry
     @dex.pokemon.each { |p| print_pokemon(p) }
   end
 
